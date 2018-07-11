@@ -12,7 +12,7 @@ export default class App extends Component {
   constructor(props) {
     super(props)
 
-    var timer = 0; 
+    this.timer = 0; 
 
     this.state = {
       active: false, 
@@ -39,7 +39,7 @@ export default class App extends Component {
     this.setState({active: true})
 
     var countDownDate = this.state.startDate.toDate().getTime();
-     timer = setInterval(function() {
+      this.timer = setInterval(function() {
       var now = new Date().getTime();
       var distance = countDownDate - now; 
 
@@ -57,20 +57,20 @@ export default class App extends Component {
         seconds,
       }
       
-      this.setState({active: true})
+      this.setState({timeRemaining})
 
-      console.log(this.state.timeRemaining);
 
       if(distance < 0) {
-        clearInterval(x);
+        clearInterval(this.timer);
       }
-    }, 1000);
+
+    }.bind(this), 1000);
   }.bind(this)
 
   renderItems = function() {
     if(this.state.active) {
       return [
-        <Clock />,
+        <Clock timeRemaining={this.state.timeRemaining}/>,
         ChangeDate('Change Date', () => this.setState({active: false})),
         LargeText('04/03'),
         <label className="grid__remaining">Remaining until your 21st Birthday </label>
